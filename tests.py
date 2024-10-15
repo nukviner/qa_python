@@ -1,4 +1,4 @@
-from main import BooksCollector
+import pytest
 
 
 class TestBooksCollector:
@@ -21,9 +21,10 @@ class TestBooksCollector:
     def test_add_new_book_no_genre_for_new_book(self, collector, collector_add_book, book_name):
         assert collector.get_book_genre(book_name) == ''
 
-    def test_test_set_book_genre_in_list_genre(self, collector, collector_add_book, book_name):
-        collector.set_book_genre(book_name, 'Фантастика')
-        assert collector.get_books_with_specific_genre('Фантастика') == [book_name]
+    @pytest.mark.parametrize('new_genre', ['Фантастика', 'Ужасы'])
+    def test_test_set_book_genre_in_list_genre(self, collector, collector_add_book, book_name, new_genre):
+        collector.set_book_genre(book_name, new_genre)
+        assert collector.get_books_with_specific_genre(new_genre) == [book_name]
 
     def test_set_book_genre_not_in_list_genre(self, collector, collector_add_book, book_name):
         collector.set_book_genre(book_name, 'Что-то странное')
